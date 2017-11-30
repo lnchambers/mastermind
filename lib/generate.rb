@@ -1,4 +1,8 @@
+require "pry"
+
 class Generate
+
+  attr_reader :elements
 
   def initialize
     @colors_easy = ["r", "b", "g", "y"]
@@ -11,17 +15,23 @@ class Generate
     4.times do
       @elements << @colors_easy.sample
     end
+    @elements
   end
 
   def medium
     6.times do
       @elements << @colors_medium.sample
     end
+    @elements
   end
 
   def hard
     8.times do
       @elements << @colors_hard.sample
     end
+    @elements
   end
+
+
+
 end
