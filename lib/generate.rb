@@ -6,12 +6,12 @@ class Generate
 
   def initialize
     @colors_easy = ["r", "b", "g", "y"]
-    @elements = []
+    @element = []
   end
 
   def easy
     4.times do
-      @elements << @colors_easy.sample
+      @elements = @element << @colors_easy.sample
     end
     @elements
   end
