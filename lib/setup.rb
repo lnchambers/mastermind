@@ -8,7 +8,3 @@ class Setup
   def initialize
     generate = Generate.new
   end
-
-  def difficulty_selector
-    answer = generate.easy if input == "e" || input == "easy"
-    answer

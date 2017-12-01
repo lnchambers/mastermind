@@ -2,7 +2,6 @@ require "minitest/autorun"
 require "minitest/pride"
 require "./lib/timer"
 require "pry"
-require "timecop"
 
 class TimerTest < Minitest::Test
 
@@ -17,7 +16,7 @@ class TimerTest < Minitest::Test
 
     start = time.start
 
-    assert_equal start, start
+    assert_equal Time.new.strftime("%s"), start
   end
 
   def test_it_accepts_stop_time
@@ -25,7 +24,29 @@ class TimerTest < Minitest::Test
 
     stop = time.stop
 
-    assert_equal stop, stop
+    assert_equal Time.new.strftime("%s"), stop
   end
 
+  def test_it_outputs_time_spent
+    time = Timer.new
+
+    start = time.start
+    sleep(1)
+    stop = time.stop
+    time_spent = time.time_spent
+
+    assert_equal [0, 1], time_spent
+  end
+
+  def test_it_outputs_correct_time_long
+    skip
+    time = Timer.new
+
+    start = time.start
+    sleep(301)
+    stop = time.stop
+    time_spent = time.time_spent
+
+    assert_equal [5, 1], time_spent
+  end
 end
