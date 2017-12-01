@@ -16,7 +16,7 @@ class TimerTest < Minitest::Test
 
     start = time.start
 
-    assert_equal Time.new.strftime("%s"), start
+    assert_equal Time.new.strftime("%s").to_i, start
   end
 
   def test_it_accepts_stop_time
@@ -24,7 +24,7 @@ class TimerTest < Minitest::Test
 
     stop = time.stop
 
-    assert_equal Time.new.strftime("%s"), stop
+    assert_equal Time.new.strftime("%s").to_i, stop
   end
 
   def test_it_outputs_time_spent

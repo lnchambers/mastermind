@@ -14,16 +14,17 @@ attr_reader :start,
   end
 
   def start
-    @start = Time.new.strftime("%s")
+    @start = Time.new.strftime("%s").to_i
   end
 
   def stop
-    @stop = Time.new.strftime("%s")
+    @stop = Time.new.strftime("%s").to_i
   end
 
   def time_spent
-    @minutes = ((@stop.to_i - @start.to_i) / 60).to_i
-    @seconds = (@stop.to_i - @start.to_i) - (@minutes * 60).to_i
+    total_seconds = @stop - @start
+    @minutes = total_seconds / 60
+    @seconds = total_seconds % 60
     time_spent = [@minutes, @seconds]
   end
 end
