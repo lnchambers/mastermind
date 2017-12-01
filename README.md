@@ -12,6 +12,7 @@ Or by clicking on the **Clone or Download** button that is located on the top ri
 Run the game by inputting 'ruby mastermind.rb' from your terminal while you are located in the main directory.
 
 **DEPENDENCIES**
+
 pry (https://github.com/pry/pry)
 minitest (https://github.com/seattlerb/minitest)
 
