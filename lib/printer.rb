@@ -12,9 +12,13 @@ class Printer
 
   def begin
     puts "Welcome to MASTERMIND!"
-    puts ">" & sleep(0.5) * 3
-    puts "Would you like to (p)lay, read the (i)nstructions, or (q)uit?"
+    sleep(0.75)
     puts ">"
+    sleep(0.75)
+    puts ">"
+    sleep(0.75)
+    puts "Would you like to (p)lay, read the (i)nstructions, or (q)uit?"
+    puts ">> "
   end
 
   def sequence
@@ -48,6 +52,18 @@ class Printer
   def end
     puts "Congratulations! You guessed the sequence '#{@elements.to_s.upcase}' in #{@guess_count} over #{@time_spent[0]} minutes and #{@time_spent[1]} seconds!"
     puts "Do you want to (p)lay again or (q)uit?"
+  end
+
+  def instructions
+    puts "The computer will generate a random four digit code consisting of the letters r, g, b, and y.\nYour job is to guess what the letters are and what order they are in\nFor example, if the code was \"rbbr\" and you guessed \"rrby\"\nThe game would tell you you had 2 correct colors in 2 correct positions\n"
+  end
+
+  def quit_print
+    puts "Oh no, the fun has just begun!"
+  end
+
+  def cheat_print
+    puts "Well fine then, don't be a good sport. The correct answer was '#{@elements.to_s.upcase}'. Enjoy knowing the game beat you."
   end
 
 end

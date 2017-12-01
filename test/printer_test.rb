@@ -50,4 +50,28 @@ class PrinterTest < Minitest::Test
     assert_includes ["4", "25"], printer
   end
 
+  def test_it_prints_instructions
+    printer = Printer.new("rggy", 3, 3, ["r", "g", "g", "y"], [4, 25])
+
+    printer = printer.instructions
+
+    assert_includes "The computer will", printer
+  end
+
+  def test_it_prints_cheat_print
+    printer = Printer.new("rggy", 3, 3, ["r", "g", "g", "y"], [4, 25])
+
+    printer = printer.cheat_print
+
+    assert_includes "Well fine then", printer
+  end
+
+  def test_it_prints_quit_print
+    printer = Printer.new("rggy", 3, 3, ["r", "g", "g", "y"], [4, 25])
+
+    printer = printer.quit_print
+
+    assert_includes "Oh no, the fun", printer
+  end
+
 end
