@@ -48,7 +48,7 @@ class CheckTest < Minitest::Test
 
     elements = ["r", "g", "b", "y"]
     input = "ybgr"
-    correct_position = check.find_position(elements, input)
+    correct_position = check.find_position(elements)
 
     assert_equal 0, correct_position
   end

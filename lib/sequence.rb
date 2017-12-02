@@ -125,4 +125,4 @@ class Sequence
       go_again
     end
   end
-end
+end 

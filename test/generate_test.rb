@@ -18,4 +18,4 @@ class GenerateTest < Minitest::Test
 
     assert_equal 4, easy.length
   end
-end
+end 

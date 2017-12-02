@@ -8,6 +8,6 @@ class SequenceTest
     sequence = Sequence.new
 
     assert_instance_of Sequence, sequence
-  end
+  end 
 
 end

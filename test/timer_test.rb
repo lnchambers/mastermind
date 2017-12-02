@@ -35,7 +35,7 @@ class TimerTest < Minitest::Test
     stop = time.stop
     time_spent = time.time_spent
 
-    assert_equal [0, 1], time_spent
+    assert_equal [0, 1], time_spent 
   end
 
   def test_it_outputs_correct_time_long

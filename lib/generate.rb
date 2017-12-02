@@ -15,4 +15,4 @@ class Generate
     end
     @element
   end
-end
+end 
