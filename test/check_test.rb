@@ -56,14 +56,6 @@ class CheckTest < Minitest::Test
 
     correct_position = check.find_position(["b", "g", "y", "r"], "bgyr")
 
-    assert_equal 4, correct_positio
-  end
-
-  def test_correct_guess_ends_loop
-    check = Check.new
-
-    correct_guess = check.correct(["b", "g", "r", "y"], "bgry")
-
-    assert_equal nil, correct_guess
+    assert_equal 4, correct_position
   end
 end

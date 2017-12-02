@@ -6,27 +6,16 @@ class Check
               :correct_position
 
   def initialize
-    @elements
-    @input
     @correct_colors = 0
     @correct_position = 0
   end
 
-  def correct (elements, input)
-    if
-      elements = input.chars
-    elsif
-      find_position
-      find_colors
-    end
-  end
-
-  def find_position (elements, input)
+  def find_position(elements, input)
     @correct_position = input.chars.zip(elements)
-    @correct_position.count {|x, y| x == y }
+    @correct_position.count {|input, element| input == element }
   end
 
-  def find_colors (elements, input)
+  def find_colors(elements, input)
     elements.uniq.count do |element|
       @correct_colors += 1 if input.include? (element)
       input.delete(element) if input.include? (element)

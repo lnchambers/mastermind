@@ -2,13 +2,9 @@ require "pry"
 
 class Timer
 
-attr_reader :start,
-            :stop,
-            :time_spent
+attr_reader :time_spent
 
   def initialize
-    @start = nil
-    @stop = nil
     @seconds = 0
     @minutes = 0
   end
