@@ -12,40 +12,32 @@ class TimerTest < Minitest::Test
   end
 
   def test_it_accepts_starts_time
-    time = Timer.new
-
-    start = time.start
+    start = Timer.start
 
     assert_equal Time.new.strftime("%s").to_i, start
   end
 
   def test_it_accepts_stop_time
-    time = Timer.new
-
-    stop = time.stop
+    stop = Timer.stop
 
     assert_equal Time.new.strftime("%s").to_i, stop
   end
 
   def test_it_outputs_time_spent
-    time = Timer.new
-
-    start = time.start
+    start = Timer.start
     sleep(1)
-    stop = time.stop
-    time_spent = time.time_spent
+    stop = Timer.stop
+    time_spent = Timer.time_spent(stop, start)
 
-    assert_equal [0, 1], time_spent 
+    assert_equal [0, 1], time_spent
   end
 
   def test_it_outputs_correct_time_long
     skip
-    time = Timer.new
-
-    start = time.start
+    start = Timer.start
     sleep(301)
-    stop = time.stop
-    time_spent = time.time_spent
+    stop = Timer.stop
+    time_spent = Timer.time_spent(stop, start)
 
     assert_equal [5, 1], time_spent
   end

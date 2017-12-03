@@ -7,8 +7,6 @@ require_relative "generate.rb"
 class Sequence
 
   def start
-    generate = Generate.new
-    @elements = generate.easy
     print "Welcome to"
     print " MASTERMIND!\n".colorize(:light_red)
     sleep(0.75)
@@ -26,32 +24,43 @@ class Sequence
     print "(q)uit".colorize(:light_red)
     print "?\n"
     print ">> ".colorize(:green)
-    input = gets.chomp.downcase
+    go_decision
+  end
 
-    if input == "p" || input == "play"
-      go_play
-    elsif input == "q" || input =="quit"
-      go_quit
-    elsif input == "i" || input == "instructions" || input == "instruction" || input == "read" || input == "read the instructions"
-      go_instruct
-    else
-      print "That was invalid input. You can "
-      print "(p)lay, ".colorize(:green)
-      print "read the "
-      print "(i)nstructions, ".colorize(:yellow)
-      print "or "
-      print "(q)uit".colorize(:light_red)
-      puts "."
-      print ">> ".colorize(:green)
-      input = gets.chomp.downcase
-    end until input == "p" || input == "play" || input == "q" || input =="quit" || input == "i" || input == "instructions" || input == "instruction" || input == "read" || input == "read the instructions"
-    go_play if input == "p" || input == "play"
-    go_quit if input == "q" || input =="quit"
-    go_instruct if input == "i" || input == "instructions" || input == "instruction" || input == "read" || input == "read the instructions"
+  def go_decision
+    input_count = 0
+    while input = gets.chomp.downcase
+      input_count += 1
+      if input == "p" || input == "play"
+        go_play
+        break
+      elsif input == "q" || input =="quit"
+        go_quit
+        break
+      elsif input == "i" || input == "instructions" || input == "instruction" || input == "read" || input == "read the instructions"
+        go_instruct
+        break
+      elsif input_count > 10
+        puts "It seems like you are having problems. Would you like to phone a friend? I'll wait."
+        print ">> ".colorize(:green)
+      else
+        print "That was invalid input. You can "
+        print "(p)lay, ".colorize(:green)
+        print "read the "
+        print "(i)nstructions, ".colorize(:yellow)
+        print "or "
+        print "(q)uit".colorize(:light_red)
+        puts "."
+        print ">> ".colorize(:green)
+      end
+    end
   end
 
   def go_play
-    @timer_start = Time.new.strftime("%s").to_i
+    generate = Generate.new
+    @elements = generate.easy
+    @timer_start = Timer.start
+    # @timer_start = Time.new.strftime("%s").to_i
     puts "I have generated a four letter sequence containing the following elements:"
     sleep(0.75)
     puts "(R)ed".colorize(:light_red)
@@ -110,7 +119,7 @@ class Sequence
   end
 
   def go_instruct
-    print "I will generate a random sequence of colors using their first initial.\nYour job is the guess the code. If the code was 'RBGY', you would win by entering 'RGBY'\nIf you enter 'RRBY', I will tell you that you have three correct colors with two in the correct position.\nAre you ready? Put "
+    print "I will generate a random sequence of colors using their first initial.\nYour job is the guess the code. If the code was 'RBGY', you would win by entering 'RBGY'\nIf you enter 'RRBY', I will tell you that you have three correct colors with two in the correct position.\nAre you ready? Put "
     print "(y)es ".colorize(:green)
     print "to continue.\n"
     print ">> ".colorize(:green)
@@ -119,7 +128,9 @@ class Sequence
       if input == "q" || input == "quit"
         go_quit
       else
-        puts "Unintelligible nonsense isn't my specialty. Type (y)es to continue."
+        print "Unintelligible nonsense isn't my specialty. Type "
+        print "(y)es ".colorize(:green)
+        puts "to continue."
         print ">> ".colorize(:green)
         input = gets.chomp.downcase
       end until input == "y" || input == "yes" || input == "q" || input == "quit"
@@ -128,12 +139,8 @@ class Sequence
   end
 
   def go_win
-    timer = Timer.new
-    timer_stop = Time.new.strftime("%s").to_i
-    total_seconds = timer_stop - @timer_start
-    minutes = total_seconds / 60
-    seconds = total_seconds % 60
-    time_spent = [minutes, seconds]
+    @timer_stop = Timer.stop
+    time_spent = Timer.time_spent(@timer_stop, @timer_start)
     print "Congratulations! ".colorize(:green)
     print "You guessed the sequence '#{@elements.join.upcase}' in #{@guess} guesses over #{time_spent[0]} minutes, #{time_spent[1]} seconds!\n"
     sleep(2)
@@ -150,7 +157,7 @@ class Sequence
     input = gets.chomp.downcase
 
     if input == "p" || input == "play" || input == "again" || input == "play again"
-      start
+      go_play
     elsif input == "q" || input == "quit"
       go_quit_end
     else

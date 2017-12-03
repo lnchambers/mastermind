@@ -19,7 +19,6 @@ class Check
     elements.uniq.count do |element|
       @correct_colors += 1 if input.include? (element)
       input.delete(element) if input.include? (element)
-      @correct_colors += 1 if input.include? (element)
     end
   end
 end
