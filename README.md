@@ -24,6 +24,6 @@ Go forth and guess randomly generated elements!
 ## Contributing
   1. Fork it
   2. Create your feature branch ( git checkout -b your_feature )
-  3. Commit your changes ( git commit -am "Add some feature")
+  3. Commit your changes ( git commit -am "Add some feature" )
   4. Push to branch ( git push origin your_feature )
   5. Create a new pull request
