@@ -53,7 +53,6 @@ class Sequence
 
   def go_repl
     check = Check.new
-    puts @elements
     @guess = 0
 
     while @input = gets.chomp.downcase
@@ -61,12 +60,14 @@ class Sequence
       @check_colors = check.find_colors(@elements, @input)
       @check_position = check.find_position(@elements, @input)
 
-      if @input.chars == @elements
-        go_win
-      elsif @input == "c" || @input == "cheat"
-        puts "Oh, so you wanna play the game that way? The correct answer was #{@elements.join.upcase}, but don't you feel like you died a little inside?"
+      if @input == "c" || @input == "cheat"
+        go_cheat
         break
       elsif @input == "q" || @input == "quit"
+        go_quit
+        break
+      elsif @input.chars == @elements
+        go_win
         break
       elsif @input.length > 4
         print "That was way too many letters. Try again.\n>> "
@@ -81,7 +82,6 @@ class Sequence
       else
         print "Your input was unintelligible. I don't even know how you got to this message. Try again.\n>> "
       end
-      go_quit if @input == "q" || @input == "quit"
     end
   end
 
@@ -117,7 +117,7 @@ class Sequence
     if input == "p" || input == "play" || input == "again" || input == "play again"
       start
     elsif input == "q" || input == "quit"
-      go_quit
+      go_quit_end
     else
       puts "Your input was unintelligible. Try again."
       go_again
@@ -126,5 +126,13 @@ class Sequence
 
   def go_quit
     puts "Ok, I get it. You aren't a Mastermind. It's ok, it isn't like I worked hard to bring this experience to you. Goodbye."
+  end
+
+  def go_quit_end
+    puts "Thank you for playing!"
+  end
+
+  def go_cheat
+    puts "Oh, so you wanna play the game that way? The correct answer was #{@elements.join.upcase}, but don't you feel like you died a little inside?"
   end
 end
