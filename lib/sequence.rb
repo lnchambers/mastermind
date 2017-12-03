@@ -3,27 +3,12 @@ require "colorize"
 require_relative "check.rb"
 require_relative "timer.rb"
 require_relative "generate.rb"
+require_relative "printer.rb"
 
 class Sequence
 
   def start
-    print "Welcome to"
-    print " MASTERMIND!\n".colorize(:light_red)
-    sleep(0.75)
-    puts ">".colorize(:light_red)
-    sleep(0.75)
-    puts ">".colorize(:yellow)
-    sleep(0.75)
-    puts ">".colorize(:green)
-    sleep(0.75)
-    print "Would you like to "
-    print "(p)lay, ".colorize(:green)
-    print "read the "
-    print "(i)nstructions, ".colorize(:yellow)
-    print "or "
-    print "(q)uit".colorize(:light_red)
-    print "?\n"
-    print ">> ".colorize(:green)
+    Printer.start
     go_decision
   end
 
@@ -32,7 +17,7 @@ class Sequence
     while input = gets.chomp.downcase
       input_count += 1
       if input == "p" || input == "play"
-        go_play
+        go_difficulty
         break
       elsif input == "q" || input =="quit"
         go_quit
@@ -40,40 +25,47 @@ class Sequence
       elsif input == "i" || input == "instructions" || input == "instruction" || input == "read" || input == "read the instructions"
         go_instruct
         break
-      elsif input_count > 10
+      elsif input_count == 10
         puts "It seems like you are having problems. Would you like to phone a friend? I'll wait."
         print ">> ".colorize(:green)
       else
-        print "That was invalid input. You can "
-        print "(p)lay, ".colorize(:green)
-        print "read the "
-        print "(i)nstructions, ".colorize(:yellow)
-        print "or "
-        print "(q)uit".colorize(:light_red)
-        puts "."
-        print ">> ".colorize(:green)
+        Printer.decision_invalid
+      end
+    end
+  end
+
+  def go_difficulty
+    Printer.difficulty
+    input_count = 0
+
+    while @input = gets.chomp.downcase
+      input_count += 1
+      if @input == "h" || @input == "hard"
+        go_play
+        break
+      elsif @input == "m" || @input == "medium"
+        go_play
+        break
+      elsif @input == "e" || @input == "easy"
+        go_play
+        break
+      elsif @input == "q" || @input == "quit"
+        go_quit
+        break
+      else
+        Printer.difficulty_invalid
       end
     end
   end
 
   def go_play
-    @elements = Generate.new.easy
+    @elements = Generate.new.easy if @input == "e" || @input == "easy"
+    @elements = Generate.new.medium if @input == "m" || @input == "medium"
+    @elements = Generate.new.hard if @input == "h" || @input == "hard"
     @timer_start = Timer.start
-    puts "I have generated a four letter sequence (e.g. 'RGBY') containing the following elements:"
-    sleep(0.75)
-    puts "(R)ed".colorize(:light_red)
-    sleep(0.75)
-    puts "(G)reen".colorize(:green)
-    sleep(0.75)
-    puts "(B)lue".colorize(:light_cyan)
-    sleep(0.75)
-    print "and"
-    print " (Y)ellow\n".colorize(:yellow)
-    sleep(0.75)
-    print "Use "
-    print "(q)uit ".colorize(:light_red)
-    puts "to stop the game. What is your guess?"
-    print ">> ".colorize(:green)
+    Printer.play_easy if @input == "e" || @input == "easy"
+    Printer.play_medium if @input == "m" || @input == "medium"
+    Printer.play_hard if @input == "h" || @input == "hard"
     go_repl
   end
 
@@ -94,11 +86,11 @@ class Sequence
       elsif @input.chars == @elements
         go_win
         break
-      elsif @input.length > 4
-        puts "You put too many letter. The code is four letters long. Try again."
+      elsif @input.length > @elements.count
+        puts "You put too many letter. The code is #{@elements.count} letters long. Try again."
         print ">> ".colorize(:green)
-      elsif @input.length < 4
-        puts "You put too few letters. The code is four letters long. Try again"
+      elsif @input.length < @elements.count
+        puts "You put too few letters. The code is #{@elements.count} letters long. Try again"
         print ">> ".colorize(:green)
       elsif @input.chars != @elements && @guess == 1
         puts "'#{@input.upcase}' has #{@check_colors} of the correct elements with #{@check_position} in the correct positions."
@@ -117,10 +109,7 @@ class Sequence
 
   def go_instruct
     input_counter = 0
-    print "I will generate a random sequence of colors using their first initial.\nYour job is the guess the code. If the code was 'RBGY', you would win by entering 'RBGY'\nIf you enter 'RRBY', I will tell you that you have three correct colors with two in the correct position.\nAre you ready? Put "
-    print "(y)es ".colorize(:green)
-    print "to play.\n"
-    print ">> ".colorize(:green)
+    Printer.instructions
 
     while input = gets.chomp.downcase
       input_counter += 1
@@ -128,18 +117,15 @@ class Sequence
         go_quit
         break
       elsif input == "y" || input == "yes"
-        go_play
+        go_difficulty
         break
       elsif input_counter >= 10
         puts "It seems you are having trouble. No matter, we'll start playing anyways. Good luck, seriously, you'll need it if you see this..."
         sleep(2.5)
-        go_play
+        go_difficulty
         break
       else
-        print "Unintelligible nonsense isn't my specialty. Type "
-        print "(y)es ".colorize(:green)
-        puts "to play."
-        print ">> ".colorize(:green)
+        Printer.instructions_invalid
       end
     end
   end
@@ -154,16 +140,11 @@ class Sequence
   end
 
   def go_again
-    print "Do you want to "
-    print "(p)lay ".colorize(:green)
-    print "again or "
-    print "(q)uit".colorize(:light_red)
-    print "?\n"
-    print ">> ".colorize(:green)
+    Printer.again
 
     while input = gets.chomp.downcase
       if input == "p" || input == "play" || input == "again" || input == "play again"
-        go_play
+        go_difficulty
         break
       elsif input == "q" || input == "quit"
         go_quit_end
@@ -176,7 +157,7 @@ class Sequence
   end
 
   def go_quit
-    puts "Ok, I get it. You aren't a Mastermind. It's ok, it isn't like I worked hard to bring this experience to you. Goodbye."
+    Printer.quit
   end
 
   def go_quit_end
