@@ -15,9 +15,13 @@ Run the game by inputting 'ruby mastermind.rb' from your terminal while you are 
 
 ## **<----------DEPENDENCIES---------->**
 
+To install dependencies, type 'bundle install' into your terminal.
+
 pry (https://github.com/pry/pry)
 
 minitest (https://github.com/seattlerb/minitest)
+
+colorize (https://github.com/fazibear/colorize)
 
 Go forth and guess randomly generated elements!
 
