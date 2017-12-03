@@ -4,15 +4,10 @@ require_relative "timer.rb"
 require_relative "generate.rb"
 
 class Sequence
-  check = Check.new
-  timer = Timer.new
-  generate = Generate.new
-  @elements = generate.easy
-  @check_colors = check
-  @check_position = check
 
   def start
-    @guess = 0
+    generate = Generate.new
+    @elements = generate.easy
     puts "Welcome to MASTERMIND!"
     sleep(0.75)
     puts ">"
@@ -23,24 +18,25 @@ class Sequence
     sleep(0.75)
     puts "Would you like to (p)lay, read the (i)nstructions, or (q)uit?"
     print ">> "
-    @input = gets.chomp.downcase
+    input = gets.chomp.downcase
 
-    if @input == "p" || @input == "play"
+    if input == "p" || input == "play"
       go_play
-    elsif @input == "q" || @input =="quit"
+    elsif input == "q" || input =="quit"
       go_quit
-    elsif @input == "i" || @inputs == "instructions" || @input == "instruction"
+    elsif input == "i" || input == "instructions" || input == "instruction" || input == "read" || input == "read the instructions"
       go_instruct
     else
-      puts "That was invalid input. Please try again"
-      sleep(0.75)
-      start
-    end
+      print "That was invalid input. You can (p)lay, read the (i)nstructions, or (q)uit.\n>> "
+      input = gets.chomp.downcase
+    end until input == "p" || input == "play" || input == "q" || input =="quit" || input == "i" || input == "instructions" || input == "instruction" || input == "read" || input == "read the instructions"
+    go_play if input == "p" || input == "play"
+    go_quit if input == "q" || input =="quit"
+    go_instruct if input == "i" || input == "instructions" || input == "instruction" || input == "read" || input == "read the instructions"
   end
 
   def go_play
-    timer = Timer.new
-    @timer_start = timer.start
+    @timer_start = Time.new.strftime("%s").to_i
     puts "I have generated a four letter sequence containing the following elements:"
     sleep(0.75)
     puts "(R)ed"
@@ -52,62 +48,64 @@ class Sequence
     puts "and (Y)ellow"
     sleep(0.75)
     print "Use (q)uit to stop the game. What is your guess?\n>> "
-    timer
     go_repl
   end
 
-  def timer
-    time = Timer.new
-    @time_start = time.start
-  end
-
   def go_repl
-      check = Check.new
-      @input = gets.chomp.downcase
-      check.find_colors(@elements, @input)
-      check.find_position(@elements, @input)
+    check = Check.new
+    puts @elements
+    @guess = 0
+
+    while @input = gets.chomp.downcase
       @guess += 1
+      @check_colors = check.find_colors(@elements, @input)
+      @check_position = check.find_position(@elements, @input)
 
       if @input.chars == @elements
         go_win
+      elsif @input == "c" || @input == "cheat"
+        puts "Oh, so you wanna play the game that way? The correct answer was #{@elements.join.upcase}, but don't you feel like you died a little inside?"
+        break
+      elsif @input == "q" || @input == "quit"
+        break
       elsif @input.length > 4
         print "That was way too many letters. Try again.\n>> "
-        go_repl
       elsif @input.length < 4
         print "One, two, three, four. That's how many letters you need. Try again.\n>> "
-        go_repl
-      elsif @input == "c" || @input == "cheat"
-        puts "Oh, so you wanna play the game that way? The correct answer was #{@elements.to_s.upcase}, but don't you feel like you died a little inside?"
-      elsif @input == "q" || @input == "quit"
-        go_quit
-      elsif @input.chars != @elements && @guess < 1
-        puts "'#{@elements.to_s.upcase}' has #{@check_colors} of the correct elements with #{@check_position} in the correct positions."
+      elsif @input.chars != @elements && @guess == 1
+        puts "'#{@input.upcase}' has #{@check_colors} of the correct elements with #{@check_position} in the correct positions."
         print "You have taken #{@guess} guess.\n>> "
-        go_repl
       elsif @input.chars != @elements && @guess > 1
-        puts "'#{@elements.to_s.upcase}' has #{@check_colors} of the correct elements with #{@check_position} in the correct positions."
+        puts "'#{@input.upcase}' has #{@check_colors} of the correct elements with #{@check_position} in the correct positions."
         print "You have taken #{@guess} guesses.\n>> "
-        go_repl
       else
         print "Your input was unintelligible. I don't even know how you got to this message. Try again.\n>> "
-        go_repl
       end
+      go_quit if @input == "q" || @input == "quit"
     end
-
-  def go_quit
-    puts "Ok, I get it. You aren't a Mastermind. It's ok, it isn't like I worked hard to bring this experience to you. Goodbye."
   end
 
   def go_instruct
-    puts "I will generate a random sequence of colors using their first initial.\nYour job is the guess the code. If the code was 'RBGY', you would win by entering 'RGBY'\n If you enter 'RRBY', I will tell you that you have three correct colors with three in the correct position.\nAre you ready?"
+    print "I will generate a random sequence of colors using their first initial.\nYour job is the guess the code. If the code was 'RBGY', you would win by entering 'RGBY'\nIf you enter 'RRBY', I will tell you that you have three correct colors with two in the correct position.\nAre you ready? Put (y)es to continue.\n>> "
+    input = gets.chomp.downcase
+
+      if input == "y" || input == "yes"
+        puts "Back to the future!"
+      else
+        print "Unintelligible nonsense isn't my specialty. Type (y)es to continue.\n>> "
+        input = gets.chomp.downcase
+      end until input == "y" || input == "yes"
     start
   end
 
   def go_win
     timer = Timer.new
-    @timer_stop = timer.stop
-    timer.time_spent(@time_start, @time_stop)
-    puts "Congratulations! You guessed the sequence '#{@elements}' in #{@guess} guesses over #{@time_spent[0]} minutes, #{@time_spent[1]} seconds!"
+    timer_stop = Time.new.strftime("%s").to_i
+    total_seconds = timer_stop - @timer_start
+    minutes = total_seconds / 60
+    seconds = total_seconds % 60
+    time_spent = [minutes, seconds]
+    puts "Congratulations! You guessed the sequence '#{@elements.join.upcase}' in #{@guess} guesses over #{time_spent[0]} minutes, #{time_spent[1]} seconds!"
     sleep(2)
     go_again
   end
@@ -121,8 +119,12 @@ class Sequence
     elsif input == "q" || input == "quit"
       go_quit
     else
-      print "Your input was unintelligible. Try again\n>> "
+      puts "Your input was unintelligible. Try again."
       go_again
     end
   end
-end 
+
+  def go_quit
+    puts "Ok, I get it. You aren't a Mastermind. It's ok, it isn't like I worked hard to bring this experience to you. Goodbye."
+  end
+end

@@ -14,11 +14,12 @@ class Check
     @correct_position = input.chars.zip(elements)
     @correct_position.count {|input, element| input == element }
   end
- 
+
   def find_colors(elements, input)
     elements.uniq.count do |element|
       @correct_colors += 1 if input.include? (element)
       input.delete(element) if input.include? (element)
+      @correct_colors += 1 if input.include? (element)
     end
   end
 end

@@ -17,7 +17,7 @@ attr_reader :time_spent
     @stop = Time.new.strftime("%s").to_i
   end
 
-  def time_spent(start, stop) 
+  def time_spent
     total_seconds = @stop - @start
     @minutes = total_seconds / 60
     @seconds = total_seconds % 60
