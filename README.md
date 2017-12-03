@@ -1,4 +1,6 @@
-A classic game of Mastermind built in a Ruby environment
+#MASTERMIND
+
+##A classic game of Mastermind built in a Ruby environment
 
 **<----------HOW TO PLAY---------->**
 
@@ -16,4 +18,4 @@ Run the game by inputting 'ruby mastermind.rb' from your terminal while you are 
 pry (https://github.com/pry/pry)
 minitest (https://github.com/seattlerb/minitest)
 
-Go forth and guess randomly generated elements! 
+Go forth and guess randomly generated elements!
