@@ -1,6 +1,6 @@
-#MASTERMIND
+**MASTERMIND**
 
-##A classic game of Mastermind built in a Ruby environment
+A classic game of Mastermind built in a Ruby environment
 
 **<----------HOW TO PLAY---------->**
 
