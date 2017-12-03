@@ -57,11 +57,9 @@ class Sequence
   end
 
   def go_play
-    generate = Generate.new
-    @elements = generate.easy
+    @elements = Generate.new.easy
     @timer_start = Timer.start
-    # @timer_start = Time.new.strftime("%s").to_i
-    puts "I have generated a four letter sequence containing the following elements:"
+    puts "I have generated a four letter sequence (e.g. 'RGBY') containing the following elements:"
     sleep(0.75)
     puts "(R)ed".colorize(:light_red)
     sleep(0.75)
@@ -80,13 +78,12 @@ class Sequence
   end
 
   def go_repl
-    check = Check.new
     @guess = 0
 
     while @input = gets.chomp.downcase
       @guess += 1
-      @check_colors = check.find_colors(@elements, @input)
-      @check_position = check.find_position(@elements, @input)
+      @check_colors = Check.new.find_colors(@elements, @input)
+      @check_position = Check.new.find_position(@elements, @input)
 
       if @input == "c" || @input == "cheat"
         go_cheat
@@ -98,10 +95,10 @@ class Sequence
         go_win
         break
       elsif @input.length > 4
-        puts "That was way too many letters. Try again."
+        puts "You put too many letter. The code is four letters long. Try again."
         print ">> ".colorize(:green)
       elsif @input.length < 4
-        puts "One, two, three, four. That's how many letters you need. Try again."
+        puts "You put too few letters. The code is four letters long. Try again"
         print ">> ".colorize(:green)
       elsif @input.chars != @elements && @guess == 1
         puts "'#{@input.upcase}' has #{@check_colors} of the correct elements with #{@check_position} in the correct positions."
@@ -119,23 +116,32 @@ class Sequence
   end
 
   def go_instruct
+    input_counter = 0
     print "I will generate a random sequence of colors using their first initial.\nYour job is the guess the code. If the code was 'RBGY', you would win by entering 'RBGY'\nIf you enter 'RRBY', I will tell you that you have three correct colors with two in the correct position.\nAre you ready? Put "
     print "(y)es ".colorize(:green)
-    print "to continue.\n"
+    print "to play.\n"
     print ">> ".colorize(:green)
-    input = gets.chomp.downcase
 
+    while input = gets.chomp.downcase
+      input_counter += 1
       if input == "q" || input == "quit"
         go_quit
+        break
+      elsif input == "y" || input == "yes"
+        go_play
+        break
+      elsif input_counter >= 10
+        puts "It seems you are having trouble. No matter, we'll start playing anyways. Good luck, seriously, you'll need it if you see this..."
+        sleep(2.5)
+        go_play
+        break
       else
         print "Unintelligible nonsense isn't my specialty. Type "
         print "(y)es ".colorize(:green)
-        puts "to continue."
+        puts "to play."
         print ">> ".colorize(:green)
-        input = gets.chomp.downcase
-      end until input == "y" || input == "yes" || input == "q" || input == "quit"
-    start if input == "y" || input == "yes"
-    go_quit if input == "q" || input == "quit"
+      end
+    end
   end
 
   def go_win
@@ -154,15 +160,18 @@ class Sequence
     print "(q)uit".colorize(:light_red)
     print "?\n"
     print ">> ".colorize(:green)
-    input = gets.chomp.downcase
 
-    if input == "p" || input == "play" || input == "again" || input == "play again"
-      go_play
-    elsif input == "q" || input == "quit"
-      go_quit_end
-    else
-      puts "Your input was unintelligible. Try again."
-      go_again
+    while input = gets.chomp.downcase
+      if input == "p" || input == "play" || input == "again" || input == "play again"
+        go_play
+        break
+      elsif input == "q" || input == "quit"
+        go_quit_end
+        break
+      else
+        puts "Your input was unintelligible. Try again."
+        print ">> ".colorize(:green)
+      end
     end
   end
 
