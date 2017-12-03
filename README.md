@@ -1,8 +1,8 @@
-**MASTERMIND**
+# MASTERMIND
 
 A classic game of Mastermind built in a Ruby environment
 
-**<----------HOW TO PLAY---------->**
+## **<----------HOW TO PLAY---------->**
 
 Clone the files to your computer by using the commands below
 
@@ -13,9 +13,10 @@ Or by clicking on the **Clone or Download** button that is located on the top ri
 
 Run the game by inputting 'ruby mastermind.rb' from your terminal while you are located in the main directory.
 
-**<----------DEPENDENCIES---------->**
+## **<----------DEPENDENCIES---------->**
 
 pry (https://github.com/pry/pry)
+
 minitest (https://github.com/seattlerb/minitest)
 
 Go forth and guess randomly generated elements!
