@@ -7,8 +7,6 @@ require_relative "printer.rb"
 
 class Sequence
 
-  attr_reader :elements
-
   def start
     Printer.start
     go_decision
