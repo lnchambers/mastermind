@@ -35,11 +35,11 @@ class Printer
   end
 
   def self.play(elements, number_of_colors)
-    print "I have generated an #{elements} letter sequence (e.g. "
-    print "'RGBY' or 'RRBB'" if elements == 4
-    print "'RGBYPP' or 'RRBBPP'" if elements == 6
-    print "'RGBYPPWW' or 'RRBBPPWW'" if elements == 8
-    print "EXAMPLES REDACTED: GODMODE ACTIVATED" if elements > 8
+    print "I have generated "
+    print "a #{elements} letter sequence (e.g. 'RGBY' or 'RRBB'" if elements == 4
+    print "a #{elements} letter sequence (e.g. " if elements == 6
+    print "an #{elements} letter sequence (e.g. " if elements == 8
+    print "a #{elements} letter sequence (e.g. " if elements > 8
     print ") containing the following #{number_of_colors} elements :\n"
     sleep(0.75)
     puts "(R)ed".colorize(:light_red)
