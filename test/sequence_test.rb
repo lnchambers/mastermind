@@ -9,5 +9,4 @@ class SequenceTest < Minitest::Test
 
     assert_instance_of Sequence, sequence
   end
-
 end

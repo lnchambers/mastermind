@@ -147,7 +147,7 @@ class Sequence
 
   def go_again
     Printer.again
-
+    
     while input = gets.chomp.downcase
       if input == "p" || input == "play" || input == "again" || input == "play again"
         go_difficulty
