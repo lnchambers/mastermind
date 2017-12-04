@@ -31,4 +31,12 @@ class Generate
     end
     @element
   end
+
+  def stupid_hard
+    how_many = rand(42..500) + 1
+    how_many.times do
+      @element << @colors_hard.sample
+    end
+    @element
+  end
 end

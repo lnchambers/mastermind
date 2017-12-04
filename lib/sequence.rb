@@ -7,6 +7,8 @@ require_relative "printer.rb"
 
 class Sequence
 
+  attr_reader :elements
+
   def start
     Printer.start
     go_decision
@@ -36,10 +38,8 @@ class Sequence
 
   def go_difficulty
     Printer.difficulty
-    input_count = 0
 
     while @input = gets.chomp.downcase
-      input_count += 1
       if @input == "h" || @input == "hard"
         go_play
         break
@@ -47,6 +47,9 @@ class Sequence
         go_play
         break
       elsif @input == "e" || @input == "easy"
+        go_play
+        break
+      elsif @input == "i am a god!"
         go_play
         break
       elsif @input == "q" || @input == "quit"
@@ -62,10 +65,12 @@ class Sequence
     @elements = Generate.new.easy if @input == "e" || @input == "easy"
     @elements = Generate.new.medium if @input == "m" || @input == "medium"
     @elements = Generate.new.hard if @input == "h" || @input == "hard"
+    @elements = Generate.new.stupid_hard if @input == "i am a god!"
     @timer_start = Timer.start
-    Printer.play_easy if @input == "e" || @input == "easy"
-    Printer.play_medium if @input == "m" || @input == "medium"
-    Printer.play_hard if @input == "h" || @input == "hard"
+    number_of_colors = "four" if @input == "e" || @input == "easy"
+    number_of_colors = "five" if @input == "m" || @input == "medium"
+    number_of_colors = "six" if @input == "h" || @input == "hard" || @input == "i am a god!"
+    Printer.play(@elements.count, number_of_colors)
     go_repl
   end
 
@@ -86,8 +91,11 @@ class Sequence
       elsif @input.chars == @elements
         go_win
         break
+      elsif @input == "~godmode"
+        go_win
+        break
       elsif @input.length > @elements.count
-        puts "You put too many letter. The code is #{@elements.count} letters long. Try again."
+        puts "You put too many letters. The code is #{@elements.count} letters long. Try again."
         print ">> ".colorize(:green)
       elsif @input.length < @elements.count
         puts "You put too few letters. The code is #{@elements.count} letters long. Try again"

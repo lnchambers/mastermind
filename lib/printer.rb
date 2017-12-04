@@ -34,8 +34,13 @@ class Printer
     print ">> ".colorize(:green)
   end
 
-  def self.play_easy
-    puts "I have generated a four letter sequence (e.g. 'RGBY' or 'RRBB') containing the following elements:"
+  def self.play(elements, number_of_colors)
+    print "I have generated an #{elements} letter sequence (e.g. "
+    print "'RGBY' or 'RRBB'" if elements == 4
+    print "'RGBYPP' or 'RRBBPP'" if elements == 6
+    print "'RGBYPPWW' or 'RRBBPPWW'" if elements == 8
+    print "EXAMPLES REDACTED: GODMODE ACTIVATED" if elements > 8
+    print ") containing the following #{number_of_colors} elements :\n"
     sleep(0.75)
     puts "(R)ed".colorize(:light_red)
     sleep(0.75)
@@ -43,48 +48,10 @@ class Printer
     sleep(0.75)
     puts "(B)lue".colorize(:light_cyan)
     sleep(0.75)
-    print "and"
-    print " (Y)ellow\n".colorize(:yellow)
-    sleep(0.75)
-    print "Use "
-    print "(q)uit ".colorize(:light_red)
-    puts "to stop the game. What is your guess?"
-    print ">> ".colorize(:green)
-  end
-
-  def self.play_medium
-    puts "I have generated a six letter sequence (e.g. 'RGBYPP' or 'RRBBPP') containing the following elements:"
-    sleep(0.75)
-    puts "(R)ed".colorize(:light_red)
-    sleep(0.75)
-    puts "(G)reen".colorize(:green)
-    sleep(0.75)
-    puts "(B)lue".colorize(:light_cyan)
-    sleep(0.75)
-    puts "(P)urple".colorize(:light_magenta)
-    sleep(0.75)
-    print "and"
-    print " (Y)ellow\n".colorize(:yellow)
-    sleep(0.75)
-    print "Use "
-    print "(q)uit ".colorize(:light_red)
-    puts "to stop the game. What is your guess?"
-    print ">> ".colorize(:green)
-  end
-
-  def self.play_hard
-    puts "I have generated an eight letter sequence (e.g. 'RGBYPWRG' or 'RRBBPPWW') containing the following elements:"
-    sleep(0.75)
-    puts "(R)ed".colorize(:light_red)
-    sleep(0.75)
-    puts "(G)reen".colorize(:green)
-    sleep(0.75)
-    puts "(B)lue".colorize(:light_cyan)
-    sleep(0.75)
-    puts "(P)urple".colorize(:light_magenta)
-    sleep(0.75)
-    puts "(W)hite".colorize(:white)
-    sleep(0.75)
+    puts "(P)urple".colorize(:light_magenta) if elements == 6 || elements >= 8
+    sleep(0.75) if elements == 6 || elements >= 8
+    puts "(W)hite".colorize(:white) if elements >= 8
+    sleep(0.75) if elements >= 8
     print "and"
     print " (Y)ellow\n".colorize(:yellow)
     sleep(0.75)
@@ -110,8 +77,8 @@ class Printer
 
   def self.quit
     print "Ok, I get it. You aren't a "
-    print "MASTERMIND".colorize(:red)
-    print ". It's ok, it isn't like I worked hard to bring this experience to you. Goodbye."
+    print "MASTERMIND".colorize(:light_red)
+    print ". It's ok, it isn't like I worked hard to bring this experience to you. Goodbye.\n"
   end
 
   def self.difficulty
@@ -144,5 +111,4 @@ class Printer
     print "?\n"
     print ">> ".colorize(:green)
   end
-
 end
