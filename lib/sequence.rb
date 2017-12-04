@@ -39,15 +39,19 @@ class Sequence
 
     while @input = gets.chomp.downcase
       if @input == "h" || @input == "hard"
+        @number_of_colors = "six"
         go_play
         break
       elsif @input == "m" || @input == "medium"
+        @number_of_colors = "five"
         go_play
         break
       elsif @input == "e" || @input == "easy"
+        @number_of_colors = "four"
         go_play
         break
       elsif @input == "i am a god!"
+        @number_of_colors = "six"
         go_play
         break
       elsif @input == "q" || @input == "quit"
@@ -65,10 +69,7 @@ class Sequence
     @elements = Generate.new.hard if @input == "h" || @input == "hard"
     @elements = Generate.new.stupid_hard if @input == "i am a god!"
     @timer_start = Timer.start
-    number_of_colors = "four" if @input == "e" || @input == "easy"
-    number_of_colors = "five" if @input == "m" || @input == "medium"
-    number_of_colors = "six" if @input == "h" || @input == "hard" || @input == "i am a god!"
-    Printer.play(@elements.count, number_of_colors)
+    Printer.play(@elements.count, @number_of_colors)
     go_repl
   end
 
@@ -147,7 +148,7 @@ class Sequence
 
   def go_again
     Printer.again
-    
+
     while input = gets.chomp.downcase
       if input == "p" || input == "play" || input == "again" || input == "play again"
         go_difficulty
