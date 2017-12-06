@@ -13,21 +13,16 @@ class Sequence
   end
 
   def go_decision
-    input_count = 0
     while input = gets.chomp.downcase
-      input_count += 1
-      if input == "p" || input == "play"
+      if check_play(input)
         go_difficulty
         break
-      elsif input == "q" || input =="quit"
+      elsif check_quit(input)
         go_quit
         break
-      elsif input == "i" || input == "instructions" || input == "instruction" || input == "read" || input == "read the instructions"
+      elsif check_instructions(input)
         go_instruct
         break
-      elsif input_count == 10
-        puts "It seems like you are having problems. Would you like to phone a friend? I'll wait."
-        print ">> ".colorize(:green)
       else
         Printer.decision_invalid
       end
@@ -38,23 +33,23 @@ class Sequence
     Printer.difficulty
 
     while @input = gets.chomp.downcase
-      if @input == "h" || @input == "hard"
+      if check_hard(@input)
         @number_of_colors = "six"
         go_play
         break
-      elsif @input == "m" || @input == "medium"
+      elsif check_medium(@input)
         @number_of_colors = "five"
         go_play
         break
-      elsif @input == "e" || @input == "easy"
+      elsif check_easy(@input)
         @number_of_colors = "four"
         go_play
         break
-      elsif @input == "i am a god!"
+      elsif check_if_god(@input)
         @number_of_colors = "six"
         go_play
         break
-      elsif @input == "q" || @input == "quit"
+      elsif check_quit(input)
         go_quit
         break
       else
@@ -64,10 +59,15 @@ class Sequence
   end
 
   def go_play
-    @elements = Generate.new.easy if @input == "e" || @input == "easy"
-    @elements = Generate.new.medium if @input == "m" || @input == "medium"
-    @elements = Generate.new.hard if @input == "h" || @input == "hard"
-    @elements = Generate.new.stupid_hard if @input == "i am a god!"
+    if check_easy(@input)
+      @elements = Generate.new.easy
+    elsif check_medium(@input)
+      @elements = Generate.new.medium
+    elsif check_hard(@input)
+      @elements = Generate.new.hard
+    else check_if_god(@input)
+      @elements = Generate.new.stupid_hard
+    end
     @timer_start = Timer.start
     Printer.play(@elements.count, @number_of_colors)
     go_repl
@@ -75,16 +75,15 @@ class Sequence
 
   def go_repl
     @guess = 0
-
     while @input = gets.chomp.downcase
       @guess += 1
       @check_colors = Check.new.find_colors(@elements, @input)
       @check_position = Check.new.find_position(@elements, @input)
 
-      if @input == "c" || @input == "cheat"
+      if check_cheat(@input)
         go_cheat
         break
-      elsif @input == "q" || @input == "quit"
+      elsif check_quit(@input)
         go_quit
         break
       elsif @input.chars == @elements
@@ -120,10 +119,10 @@ class Sequence
 
     while input = gets.chomp.downcase
       input_counter += 1
-      if input == "q" || input == "quit"
+      if check_quit(input)
         go_quit
         break
-      elsif input == "y" || input == "yes"
+      elsif check_yes(input)
         go_difficulty
         break
       elsif input_counter >= 10
@@ -150,10 +149,10 @@ class Sequence
     Printer.again
 
     while input = gets.chomp.downcase
-      if input == "p" || input == "play" || input == "again" || input == "play again"
+      if check_play(input)
         go_difficulty
         break
-      elsif input == "q" || input == "quit"
+      elsif check_quit(input)
         go_quit_end
         break
       else
@@ -169,6 +168,42 @@ class Sequence
 
   def go_quit_end
     puts "Thank you for playing!"
+  end
+
+  def check_quit(input)
+    input == "q" || input == "quit"
+  end
+
+  def check_play(input)
+    input == "p" || input == "play" || input == "again" || input == "play again"
+  end
+
+  def check_yes(input)
+    input == "y" || input == "yes"
+  end
+
+  def check_cheat(input)
+    input == "c" || input == "cheat"
+  end
+
+  def check_instructions(input)
+    input == "i" || input == "instructions" || input == "instruction" || input == "read" || input == "read the instructions"
+  end
+
+  def check_if_god(input)
+    input == "i am a god!"
+  end
+
+  def check_hard(input)
+    input == "h" || input == "hard"
+  end
+
+  def check_medium(input)
+    input == "m" || input == "medium"
+  end
+
+  def check_easy(input)
+    input == "c" || input == "cheat"
   end
 
   def go_cheat

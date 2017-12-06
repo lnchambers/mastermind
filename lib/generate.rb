@@ -5,7 +5,7 @@ class Generate
   attr_reader :element
 
   def initialize
-    @colors_easy = ["r", "b", "g", "y"]
+    @colors = ["r", "b", "g", "y"]
     @colors_medium = ["r", "b", "g", "y", "p"]
     @colors_hard = ["r", "b", "g", "y", "p", "w"]
     @element = []
